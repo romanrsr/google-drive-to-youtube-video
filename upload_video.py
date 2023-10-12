@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-import httplib
-import httplib2
+import http.client
+import http.client
 import os
 import random
 import sys
@@ -17,13 +17,13 @@ from oauth2client.tools import argparser, run_flow
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
-httplib2.RETRIES = 1
+http.client.RETRIES = 1
 
 # Maximum number of times to retry before giving up.
 MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
-RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, httplib.NotConnected,
+RETRIABLE_EXCEPTIONS = (http.client.http.clientError, IOError, httplib.NotConnected,
   httplib.IncompleteRead, httplib.ImproperConnectionState,
   httplib.CannotSendRequest, httplib.CannotSendHeader,
   httplib.ResponseNotReady, httplib.BadStatusLine)
@@ -83,7 +83,7 @@ def get_authenticated_service(args):
     credentials = run_flow(flow, storage, args)
 
   return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-    http=credentials.authorize(httplib2.Http()))
+    http=credentials.authorize(http.client.Http()))
 
 def initialize_upload(youtube, options):
   tags = None
